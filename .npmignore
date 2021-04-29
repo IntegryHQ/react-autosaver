@@ -1,0 +1,11 @@
+# Ignore files which should not be part of npm dist build
+
+node_modules
+package-lock.json
+yarn.lock
+src
+src/**/*
+tests
+tests/**/*
+rollup.config.js
+tsconfig.json

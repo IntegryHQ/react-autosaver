@@ -1,0 +1,54 @@
+{
+  "name": "react-autosaver",
+  "version": "0.0.1",
+  "description": "Simple higher-order functions and hooks to manage auto-saving in React",
+  "main": "dist/cjs/index.cjs.js",
+  "module": "dist/esm/index.csm.js",
+  "types": "dist/esm/index.csm.d.ts",
+  "scripts": {
+    "prepare": "install-peers",
+    "start": "rollup -c -w --environment HOT_RELOAD_ENABLED",
+    "build:prod": "rollup -c --environment MINIFY_ENABLED,PROD_MODE_ENABLED",
+    "build:dev": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osamaaamer95/react-autosaver.git"
+  },
+  "keywords": [
+    "react",
+    "autosave"
+  ],
+  "author": {
+    "name": "Osama Aamer",
+    "email": "osama.aamer95@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/osamaaamer95/react-autosaver/issues"
+  },
+  "homepage": "https://github.com/osamaaamer95/react-autosaver#readme",
+  "peerDependencies": {
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^18.0.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "@types/node": "^15.0.1",
+    "@types/react": "^17.0.4",
+    "@types/react-dom": "^17.0.3",
+    "@wessberg/rollup-plugin-ts": "^1.3.14",
+    "chalk": "^4.1.1",
+    "install-peers-cli": "^2.2.0",
+    "rollup": "^2.46.0",
+    "rollup-plugin-clear": "^2.0.7",
+    "rollup-plugin-filesize": "^9.1.1",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-serve": "^1.1.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.2.4"
+  }
+}
