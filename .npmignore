@@ -9,3 +9,5 @@ tests
 tests/**/*
 rollup.config.js
 tsconfig.json
+.prettierrc.json 
+.eslintrc.json          
