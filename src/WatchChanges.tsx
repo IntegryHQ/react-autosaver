@@ -1,6 +1,6 @@
-import React, { memo, ReactNode, useCallback, useEffect, useRef } from "react";
-import { useAutoSaveContext } from "./AutoSaveContext";
-import { useIsMounted } from "./useIsMounted";
+import React, { memo, ReactNode, useCallback, useEffect, useRef } from 'react';
+import { useAutoSaveContext } from './AutoSaveContext';
+import useIsMounted from './useIsMounted';
 
 interface RenderPropType {
   autosaveInputRef: React.Ref<HTMLInputElement>;
@@ -8,9 +8,9 @@ interface RenderPropType {
 }
 
 const TriggerModes = {
-  BLUR: "BLUR",
-  IDLE: "IDLE",
-  MANUAL: "MANUAL",
+  BLUR: 'BLUR',
+  IDLE: 'IDLE',
+  MANUAL: 'MANUAL',
 };
 
 interface WatchChangesProps {
@@ -20,12 +20,12 @@ interface WatchChangesProps {
   inputFadeDelay?: number;
   inputInputIdleDelay?: number;
   triggeredDelay?: number;
-  children: ({ didChangeHappen }: RenderPropType) => ReactNode;
+  children: (props: RenderPropType) => ReactNode;
 }
 
 const WatchChangesInner: React.FC<WatchChangesProps> = memo((props) => {
   const {
-    label = "Watch Changes",
+    label = 'Watch Changes',
     children,
     triggerMode = TriggerModes.BLUR,
     inputFadeDelay = 400,
@@ -52,13 +52,13 @@ const WatchChangesInner: React.FC<WatchChangesProps> = memo((props) => {
   useEffect(() => {
     const didInputLoseFocus = () => {
       fadeTimeoutRef.current = setTimeout(() => {
-        console.log("Input lost focus");
+        // console.log('Input lost focus');
         triggerAutosaveWrapper();
       }, inputFadeDelay);
     };
 
     const didInputIdleOccur = () => {
-      console.log("Change in input");
+      // console.log('Change in input');
       if (idleTimeoutRef.current) clearTimeout(idleTimeoutRef.current);
       const timeout = setTimeout(() => {
         triggerAutosaveWrapper();
@@ -68,9 +68,9 @@ const WatchChangesInner: React.FC<WatchChangesProps> = memo((props) => {
 
     if (autosaveInputRef) {
       if (autosaveInputRef.current) {
-        if (triggerMode === TriggerModes.BLUR)
+        if (triggerMode === TriggerModes.BLUR) {
           autosaveInputRef.current.onblur = didInputLoseFocus;
-        else if (triggerMode === TriggerModes.IDLE) {
+        } else if (triggerMode === TriggerModes.IDLE) {
           autosaveInputRef.current.oninput = didInputIdleOccur;
         }
       }
@@ -85,7 +85,7 @@ const WatchChangesInner: React.FC<WatchChangesProps> = memo((props) => {
 
   const didChangeHappen = () => {
     triggeredTimeoutRef.current = setTimeout(() => {
-      console.log("A change occured in a child component");
+      // console.log('A change occured in a child component');
       if (triggerMode === TriggerModes.MANUAL) triggerAutoSave();
     }, triggeredDelay);
   };
@@ -93,7 +93,11 @@ const WatchChangesInner: React.FC<WatchChangesProps> = memo((props) => {
   return <div>{children({ didChangeHappen, autosaveInputRef })}</div>;
 });
 
-const WatchChanges = (props: Omit<WatchChangesProps, "triggerAutoSave">) => {
+WatchChangesInner.displayName = 'WatchChangesInner';
+
+const WatchChanges: React.FC<Omit<WatchChangesProps, 'triggerAutoSave'>> = (
+  props,
+) => {
   const { triggerAutoSave } = useAutoSaveContext();
   // The rest of your rendering logic
   return <WatchChangesInner {...props} triggerAutoSave={triggerAutoSave} />;

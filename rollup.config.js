@@ -1,25 +1,26 @@
+/* eslint-disable no-console */
 /**
  * Main Rollup config file
  */
 
-import chalk from "chalk";
-import ts from "@wessberg/rollup-plugin-ts";
-import { terser } from "rollup-plugin-terser";
-import commonjs from "@rollup/plugin-commonjs";
-import { nodeResolve } from "@rollup/plugin-node-resolve";
-import serve from "rollup-plugin-serve";
-import livereload from "rollup-plugin-livereload";
-import clear from "rollup-plugin-clear";
-import filesize from "rollup-plugin-filesize";
+import chalk from 'chalk';
+import ts from '@wessberg/rollup-plugin-ts';
+import { terser } from 'rollup-plugin-terser';
+import commonjs from '@rollup/plugin-commonjs';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+// import serve from 'rollup-plugin-serve';
+// import livereload from 'rollup-plugin-livereload';
+import clear from 'rollup-plugin-clear';
+import filesize from 'rollup-plugin-filesize';
 
-import pkg from "./package.json";
+import pkg from './package.json';
 
-const outputDir = "./dist";
+const outputDir = './dist';
 
 const GLOBALS = {
-  react: "React",
-  "react-dom": "ReactDOM",
-  "prop-types": "PropTypes",
+  react: 'React',
+  'react-dom': 'ReactDOM',
+  'prop-types': 'PropTypes',
 };
 
 /**
@@ -32,7 +33,7 @@ const GLOBALS = {
  * @returns {Array} Rollup plugin array
  */
 const getPluginsConfig = (config) => {
-  const { prodMode, minify, hmr } = config;
+  const { prodMode, minify } = config;
 
   const pluginArr = [
     clear({
@@ -44,7 +45,7 @@ const getPluginsConfig = (config) => {
       resolveOnly: [/^(?!react$)/, /^(?!react-dom$)/, /^(?!prop-types)/],
     }),
     ts({
-      transpiler: "babel",
+      transpiler: 'babel',
     }),
     commonjs(),
     filesize(),
@@ -55,7 +56,7 @@ const getPluginsConfig = (config) => {
         output: {
           comments: !prodMode,
         },
-      })
+      }),
     );
   }
   // if (hmr) {
@@ -71,38 +72,39 @@ const getPluginsConfig = (config) => {
   return pluginArr;
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default () => {
   const enableProdMode = !!process.env.PROD_MODE_ENABLED;
   const shoudMinify = !!process.env.MINIFY_ENABLED;
   const shouldEnableHMR = !!process.env.HOT_RELOAD_ENABLED;
 
   console.log(
-    chalk.keyword("orange")("\nBuilding and compiling react-autosaver")
+    chalk.keyword('orange')('\nBuilding and compiling react-autosaver'),
   );
 
   console.log(`
-     MINIFY_ENABLED: ${chalk.keyword("orange")(shoudMinify)}
-     PROD_MODE_ENABLED: ${chalk.keyword("orange")(enableProdMode)}
-     HOT_RELOAD_ENABLED: ${chalk.keyword("orange")(shouldEnableHMR)}
+     MINIFY_ENABLED: ${chalk.keyword('orange')(shoudMinify)}
+     PROD_MODE_ENABLED: ${chalk.keyword('orange')(enableProdMode)}
+     HOT_RELOAD_ENABLED: ${chalk.keyword('orange')(shouldEnableHMR)}
    `);
 
   const bundle = {
-    input: "src/index.ts",
+    input: 'src/index.ts',
     output: [
       {
         file: pkg.main,
-        format: "cjs",
+        format: 'cjs',
         sourcemap: true,
         globals: GLOBALS,
       },
       {
         file: pkg.module,
-        format: "esm",
+        format: 'esm',
         sourcemap: true,
         globals: GLOBALS,
       },
     ],
-    external: ["react", "react-dom", "prop-types", /@babel\/runtime/],
+    external: ['react', 'react-dom', 'prop-types', /@babel\/runtime/],
   };
 
   bundle.plugins = getPluginsConfig({

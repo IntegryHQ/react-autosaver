@@ -1,5 +1,5 @@
-import React, { ReactNode, useCallback, useEffect, useRef } from "react";
-import { AutoSaveContext } from "./AutoSaveContext";
+import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
+import { AutoSaveContext } from './AutoSaveContext';
 
 interface RenderPropType {
   autosaveDelay?: number;
@@ -12,6 +12,7 @@ interface AutoSaveProps {
 }
 
 const AutoSave: React.FC<AutoSaveProps> = (props) => {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const { children, onAutosaveTriggered = () => {}, autosaveDelay = 0 } = props;
   const autosaveRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -24,7 +25,7 @@ const AutoSave: React.FC<AutoSaveProps> = (props) => {
 
   const triggerAutoSave = useCallback(() => {
     autosaveRef.current = setTimeout(() => {
-      console.log("Triggering autosave");
+      console.log('Triggering autosave');
       onAutosaveTriggered();
     }, autosaveDelay);
   }, [onAutosaveTriggered, autosaveDelay]);
