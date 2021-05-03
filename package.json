@@ -1,6 +1,6 @@
 {
   "name": "react-autosaver",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Simple higher-order functions and hooks to manage auto-saving in React",
   "main": "dist/cjs/index.cjs.js",
   "module": "dist/esm/index.csm.js",
