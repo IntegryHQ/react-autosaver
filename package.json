@@ -34,8 +34,8 @@
   "homepage": "https://github.com/IntegryHQ/react-autosaver#readme",
   "peerDependencies": {
     "prop-types": "^15.7.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^18.0.0",
