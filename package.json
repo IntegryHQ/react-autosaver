@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/osamaaamer95/react-autosaver.git"
+    "url": "git+https://github.com/IntegryHQ/react-autosaver.git"
   },
   "keywords": [
     "react",
@@ -29,9 +29,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/osamaaamer95/react-autosaver/issues"
+    "url": "https://github.com/IntegryHQ/react-autosaver/issues"
   },
-  "homepage": "https://github.com/osamaaamer95/react-autosaver#readme",
+  "homepage": "https://github.com/IntegryHQ/react-autosaver#readme",
   "peerDependencies": {
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
