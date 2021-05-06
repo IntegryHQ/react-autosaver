@@ -11,3 +11,5 @@ rollup.config.js
 tsconfig.json
 .prettierrc.json 
 .eslintrc.json          
+.github
+SECURITY.md
