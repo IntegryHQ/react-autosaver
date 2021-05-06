@@ -14,7 +14,6 @@ const TriggerModes = {
 };
 
 interface WatchChangesProps {
-  label?: string;
   triggerAutoSave: () => void;
   triggerMode: keyof typeof TriggerModes;
   inputFadeDelay?: number;
@@ -25,7 +24,6 @@ interface WatchChangesProps {
 
 const WatchChangesInner: React.FC<WatchChangesProps> = memo((props) => {
   const {
-    label = 'Watch Changes',
     children,
     triggerMode = TriggerModes.BLUR,
     inputFadeDelay = 400,
@@ -41,10 +39,6 @@ const WatchChangesInner: React.FC<WatchChangesProps> = memo((props) => {
 
   const isMounted = useIsMounted();
 
-  useEffect(() => {
-    console.log(`Rendering: ${label}`);
-  });
-
   const triggerAutosaveWrapper = useCallback(() => {
     if (isMounted()) triggerAutoSave();
   }, [isMounted, triggerAutoSave]);
@@ -52,13 +46,11 @@ const WatchChangesInner: React.FC<WatchChangesProps> = memo((props) => {
   useEffect(() => {
     const didInputLoseFocus = () => {
       fadeTimeoutRef.current = setTimeout(() => {
-        // console.log('Input lost focus');
         triggerAutosaveWrapper();
       }, inputFadeDelay);
     };
 
     const didInputIdleOccur = () => {
-      // console.log('Change in input');
       if (idleTimeoutRef.current) clearTimeout(idleTimeoutRef.current);
       const timeout = setTimeout(() => {
         triggerAutosaveWrapper();
@@ -85,7 +77,6 @@ const WatchChangesInner: React.FC<WatchChangesProps> = memo((props) => {
 
   const didChangeHappen = () => {
     triggeredTimeoutRef.current = setTimeout(() => {
-      // console.log('A change occured in a child component');
       if (triggerMode === TriggerModes.MANUAL) triggerAutoSave();
     }, triggeredDelay);
   };

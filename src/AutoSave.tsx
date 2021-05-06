@@ -1,19 +1,25 @@
-import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { useInterval } from './useInterval';
 import { AutoSaveContext } from './AutoSaveContext';
 
-interface RenderPropType {
-  autosaveDelay?: number;
-}
-
 interface AutoSaveProps {
+  isAutosaving: boolean;
   onAutosaveTriggered?: () => void;
   autosaveDelay?: number;
-  children: (args: RenderPropType) => ReactNode;
+  enableAutosaveLoop?: boolean;
+  autosaveLoopInterval?: number;
 }
 
 const AutoSave: React.FC<AutoSaveProps> = (props) => {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const { children, onAutosaveTriggered = () => {}, autosaveDelay = 0 } = props;
+  const {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    onAutosaveTriggered = () => {},
+    enableAutosaveLoop = false,
+    autosaveDelay = 0,
+    autosaveLoopInterval = 3000,
+    isAutosaving = false,
+    children,
+  } = props;
   const autosaveRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
@@ -23,9 +29,16 @@ const AutoSave: React.FC<AutoSaveProps> = (props) => {
     };
   }, []);
 
+  useInterval(
+    () => {
+      // inform parent that autosave should occur if it isn't already
+      if (!isAutosaving) onAutosaveTriggered();
+    },
+    enableAutosaveLoop ? autosaveLoopInterval : null,
+  );
+
   const triggerAutoSave = useCallback(() => {
     autosaveRef.current = setTimeout(() => {
-      console.log('Triggering autosave');
       onAutosaveTriggered();
     }, autosaveDelay);
   }, [onAutosaveTriggered, autosaveDelay]);
@@ -36,7 +49,7 @@ const AutoSave: React.FC<AutoSaveProps> = (props) => {
         triggerAutoSave,
       }}
     >
-      {children({})}
+      {children}
     </AutoSaveContext.Provider>
   );
 };

@@ -31,10 +31,11 @@ Consider using this component if:
 1. You are looking to integrate auto-save functionality in an input-based form
 2. You are looking for a solution where auto-save occurs with a configurable delay
 3. You are looking to bind auto-save events to input events such as blur or when user becomes idle
+4. You want a simple loop based auto-save trigger which can be toggled on/off
 
 ### What does this package do?
 
-1. Exposes a component called `AutoSaver` that has a prop `onAutosave` which allows you to specify a callback whenever the component determines that auto save should occur
+1. Exposes a component called `AutoSaver` that has a prop `onAutosaveTriggered` which allows you to specify a callback whenever the component determines that auto save should occur
 
 2. Exposes a component called `WatchChanges` which can be placed as a child of the parent `AutoSaver`. This component can bind to inputs using React refs and triggers whenever the following happens:
 
@@ -45,6 +46,8 @@ Consider using this component if:
 3. Allows configuring a global auto-save delay for the `onAutosave` callback
 
 4. Allows configuring auto-save delays per `WatchChanges` instance, so you can fine tune exactly how soon or late the autosave event is triggered on per-component basis
+
+5. Allows toggling on/off an autosave loop
 
 ## Installation
 
@@ -64,7 +67,7 @@ Import components as needed:
 import { AutoSave } from 'react-autosaver';
 ```
 
-> This library has the following peer dependencies:
+`react-autosaver` has the following peer dependencies:
 
 ```json
 "prop-types": "^15.7.2"
@@ -76,7 +79,30 @@ import { AutoSave } from 'react-autosaver';
 
 ### Minimal example
 
-Here is a fully functional example showing `react-autosaver` in action:
+1. With auto-save loop
+
+```jsx
+import React, { useState, useCallback } from 'react';
+import { AutoSave, WatchChanges } from 'react-autosaver';
+
+export default function App() {
+  const [isSaving, setIsSaving] = useState(false);
+
+  const callback = useCallback(() => {
+    console.log('Lets autosave now!');
+  }, []);
+
+  return (
+    <AutoSave
+      isAutosaving={isSaving}
+      enableAutosaveLoop
+      onAutosaveTriggered={callback}
+    />
+  );
+}
+```
+
+2. With `WatchChanges`
 
 ```jsx
 import React, { useState, useCallback } from 'react';
@@ -84,6 +110,7 @@ import { AutoSave, WatchChanges } from 'react-autosaver';
 
 export default function App() {
   const [input, setInput] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   const triggerAutoSave = useCallback(() => {
     console.log('Lets autosave now!');
@@ -94,23 +121,21 @@ export default function App() {
   };
 
   return (
-    <AutoSave onAutosaveTriggered={triggerAutoSave}>
-      {() => (
-        <WatchChanges triggerMode="BLUR">
-          {({ autosaveInputRef }) => {
-            return (
-              <>
-                <label>I trigger autosave on blur</label>
-                <input
-                  ref={autosaveInputRef}
-                  value={input}
-                  onChange={onInputChange}
-                />
-              </>
-            );
-          }}
-        </WatchChanges>
-      )}
+    <AutoSave isAutosaving={isSaving} onAutosaveTriggered={triggerAutoSave}>
+      <WatchChanges triggerMode="BLUR">
+        {({ autosaveInputRef }) => {
+          return (
+            <>
+              <label>I trigger autosave on blur</label>
+              <input
+                ref={autosaveInputRef}
+                value={input}
+                onChange={onInputChange}
+              />
+            </>
+          );
+        }}
+      </WatchChanges>
     </AutoSave>
   );
 }

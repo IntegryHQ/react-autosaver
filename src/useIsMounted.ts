@@ -1,3 +1,8 @@
+/**
+ * Memoized version of useIsMounted
+ * https://gist.github.com/jaydenseric/a67cfb1b809b1b789daa17dfe6f83daa
+ */
+
 import { useCallback, useEffect, useRef } from 'react';
 
 const useIsMounted = (): (() => boolean) => {
